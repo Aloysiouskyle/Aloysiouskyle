@@ -1,5 +1,9 @@
 name: Update profile statistics
 on:
+  push:
+    paths:
+      - 'scripts/update_stats.py'
+      - '.github/workflows/update-profile-stats.yml'
   schedule:
     - cron: '17 5 * * *'
   workflow_dispatch:
@@ -19,6 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Check SVG generator
+        run: python scripts/update_stats.py --self-test
       - name: Generate GitHub profile SVGs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
